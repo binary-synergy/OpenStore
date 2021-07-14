@@ -1,0 +1,33 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using NBrightCore.common
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+@using Newtonsoft.Json;
+@using DotNetNuke.Entities.Portals;
+@using DotNetNuke.Entities.Modules;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+<!-- "pageheaderdetail.cshtml" template will be auto injected as dynamic data into page head section -->
+@{
+    // assign Model, so we can resolve var in VS
+    var product = (ProductData)Model.List.First();
+    var info = (NBrightInfo)product.Info;
+    var navigationdata = new NavigationData(PortalSettings.Current.PortalId, Model.GetSetting("modref"));
+    var entryUrl = EntryUrl(navigationdata, info, Model);
+    PortalModuleBase pm = new PortalModuleBase();
+    bool isBroker = pm.UserInfo.IsInRole("Brokers");
+    bool isReseller = pm.UserInfo.IsInRole("Reseller");
+    var tabid = StoreSettings.Current.ProductListTabId;
+}
+<script>
+    $(document).ready(function () {
+        $('#dnn_contentPane [id*="_titleLabel"]').text('@(product.ProductName)');
+    });
+</script>
+
+<h1 style="text-align: center;">@(product.ProductName)</h1>
+<div class="categorybreadcrumbscenter">@CategoryBreadCrumb(true, Model)</div>
+

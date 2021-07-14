@@ -1,0 +1,17 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using System.Linq
+@{
+    var grpcat = (Nevoweb.DNN.NBrightBuy.Components.GroupCategoryData)Model.List.First();
+}
+
+<a href="@grpcat.url">
+    @if (grpcat.imageurl == "")
+    {
+        <i class="fa fa-picture-o"></i>
+    }
+    else
+    {
+        <img class="img-fluid" src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@(grpcat.imageurl)&w=200&h=200" />
+    }
+    <h4 style="text-align: center;">@grpcat.categoryname</h4>
+</a>

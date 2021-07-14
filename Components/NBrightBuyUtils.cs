@@ -270,7 +270,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             seoname = Utils.UrlFriendly(seoname);
 
             urldata = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(objTabInfo, strurl, seoname);
-
+           
             Utils.SetCache(cachekey, urldata);
 
             return urldata;

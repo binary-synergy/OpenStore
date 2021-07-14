@@ -868,6 +868,71 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                     info.GetXmlPropertyRaw("genxml/textbox/description"));
                             // ajax on ckeditor (Ajax doesn't work for telrik)
                         }
+                        else if (id == "txtedit4")  // additionalsummary
+                        {
+                            var xpath = f.Replace("textbox", "edt");
+                            // special processing for editor, to place code in standard place.
+                            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/edt") == null)
+                                DataLangRecord.AddSingleNode("edt", "", "genxml");
+                            if (info.GetXmlProperty("genxml/textbox/txtedit4") == "")
+                                DataLangRecord.SetXmlProperty(xpath, info.GetXmlPropertyRaw("genxml/edt/txtedit4"));
+                            else
+                                DataLangRecord.SetXmlProperty(xpath,
+                                    info.GetXmlPropertyRaw("genxml/textbox/txtedit4"));
+                            // ajax on ckeditor (Ajax doesn't work for telrik)
+                        }
+                        else if (id == "txtedit") //specification
+                        {
+                            var xpath = f.Replace("textbox", "edt");
+                            // special processing for editor, to place code in standard place.
+                            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/edt") == null)
+                                DataLangRecord.AddSingleNode("edt", "", "genxml");
+                            if (info.GetXmlProperty("genxml/textbox/txtedit") == "")
+                                DataLangRecord.SetXmlProperty(xpath, info.GetXmlPropertyRaw("genxml/edt/txtedit"));
+                            else
+                                DataLangRecord.SetXmlProperty(xpath,
+                                    info.GetXmlPropertyRaw("genxml/textbox/txtedit"));
+                            // ajax on ckeditor (Ajax doesn't work for telrik)
+                        }
+                        else if (id == "txtedit2") // firmware
+                        {
+                            var xpath = f.Replace("textbox", "edt");
+                            // special processing for editor, to place code in standard place.
+                            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/edt") == null)
+                                DataLangRecord.AddSingleNode("edt", "", "genxml");
+                            if (info.GetXmlProperty("genxml/textbox/txtedit2") == "")
+                                DataLangRecord.SetXmlProperty(xpath, info.GetXmlPropertyRaw("genxml/edt/txtedit2"));
+                            else
+                                DataLangRecord.SetXmlProperty(xpath,
+                                    info.GetXmlPropertyRaw("genxml/textbox/txtedit2"));
+                            // ajax on ckeditor (Ajax doesn't work for telrik)
+                        }
+                        else if (id == "txtedit3") //userguides
+                        {
+                            var xpath = f.Replace("textbox", "edt");
+                            // special processing for editor, to place code in standard place.
+                            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/edt") == null)
+                                DataLangRecord.AddSingleNode("edt", "", "genxml");
+                            if (info.GetXmlProperty("genxml/textbox/txtedit3") == "")
+                                DataLangRecord.SetXmlProperty(xpath, info.GetXmlPropertyRaw("genxml/edt/txtedit3"));
+                            else
+                                DataLangRecord.SetXmlProperty(xpath,
+                                    info.GetXmlPropertyRaw("genxml/textbox/txtedit3"));
+                            // ajax on ckeditor (Ajax doesn't work for telrik)
+                        }
+                        else if (id == "txtedit5") // videos
+                        {
+                            var xpath = f.Replace("textbox", "edt");
+                            // special processing for editor, to place code in standard place.
+                            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/edt") == null)
+                                DataLangRecord.AddSingleNode("edt", "", "genxml");
+                            if (info.GetXmlProperty("genxml/textbox/txtedit5") == "")
+                                DataLangRecord.SetXmlProperty(xpath, info.GetXmlPropertyRaw("genxml/edt/txtedit5"));
+                            else
+                                DataLangRecord.SetXmlProperty(xpath,
+                                    info.GetXmlPropertyRaw("genxml/textbox/txtedit5"));
+                            // ajax on ckeditor (Ajax doesn't work for telrik)
+                        }
                         else
                         {
                             DataLangRecord.RemoveXmlNode(f);

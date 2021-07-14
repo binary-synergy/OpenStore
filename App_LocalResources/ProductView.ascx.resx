@@ -133,13 +133,13 @@
     <value>&lt;i title="Edit Product" class="fa fa-edit"&gt;&lt;/i&gt;</value>
   </data>
   <data name="description.Text" xml:space="preserve">
-    <value>Description</value>
+    <value>Features</value>
   </data>
   <data name="documentation.Text" xml:space="preserve">
-    <value>Downloads</value>
+    <value>Documentation</value>
   </data>
   <data name="models.Text" xml:space="preserve">
-    <value>Models</value>
+    <value>Model Details</value>
   </data>
   <data name="related.Text" xml:space="preserve">
     <value>Related Products</value>
@@ -380,5 +380,23 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   </data>
   <data name="productdetail.Text" xml:space="preserve">
     <value>Product Details</value>
+  </data>
+  <data name="additionalsummary.Text" xml:space="preserve">
+    <value>Additional Summary</value>
+  </data>
+  <data name="firmware.Text" xml:space="preserve">
+    <value>Firmware</value>
+  </data>
+  <data name="specification.Text" xml:space="preserve">
+    <value>Specification</value>
+  </data>
+  <data name="userguides.Text" xml:space="preserve">
+    <value>User Guides</value>
+  </data>
+  <data name="videos.Text" xml:space="preserve">
+    <value>Videos</value>
+  </data>
+  <data name="relatedproducts.Text" xml:space="preserve">
+    <value>Related Products</value>
   </data>
 </root>

@@ -1233,4 +1233,19 @@
   <data name="Carttotal.Text" xml:space="preserve">
     <value>Subtotal</value>
   </data>
+  <data name="additionalsummary.Text" xml:space="preserve">
+    <value>Additional Summary</value>
+  </data>
+  <data name="firmware.Text" xml:space="preserve">
+    <value>Firmware</value>
+  </data>
+  <data name="specification.Text" xml:space="preserve">
+    <value>Specification</value>
+  </data>
+  <data name="userguides.Text" xml:space="preserve">
+    <value>User Guides</value>
+  </data>
+  <data name="videos.Text" xml:space="preserve">
+    <value>Videos</value>
+  </data>
 </root>

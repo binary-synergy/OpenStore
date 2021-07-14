@@ -5,6 +5,8 @@
 @using NBrightDNN
 @using Nevoweb.DNN.NBrightBuy.Components;
 @using DotNetNuke.Entities.Portals;
+@using NBrightCore.common;
+@using Newtonsoft.Json;
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 
@@ -20,9 +22,15 @@
 @*@AddPreProcessMetaData("selectpagesize", "True", Model.FullTemplateName, Model.ModuleId.ToString())*@ <!-- flag to tell product list a custom pagesize may be applied -->
 @{
     var navigationdata = new NavigationData(PortalSettings.Current.PortalId, Model.GetSetting("modref"));
+    bool lbSubCategoryExists = !string.IsNullOrEmpty(Convert.ToString(SubCategory(navigationdata.CategoryId)));
+    var tabid = Model.GetSettingInt("productlisttab");
+    if (tabid <= 0)
+    {
+        tabid = StoreSettings.Current.ProductListTabId;
+    }
 }
 <!-- Product List header -->
-<div class="nbs">
+<div class="nbs" style="display:grid">
 
     <!-- 0=Normal 1=Search 2=Favorites  -->
     @if (Model.GetSettingInt("displaytype") == 0)
@@ -36,25 +44,32 @@
         var sortAtts = "id='" + sortId + "' class='" + sortClass + "'";
     }
     <script>
-    $(document).ready(function () {
-        $(".@sortClass").unbind("change");
-        $(".@sortClass").change(sortOrderChanged);
+        $(document).ready(function () {
+            $(".@sortClass").unbind("change");
+            $(".@sortClass").change(sortOrderChanged);
 
-        $(".@pageClass").unbind("change");
-        $(".@pageClass").change(pageSizeChanged);
-    });
+            $(".@pageClass").unbind("change");
+            $(".@pageClass").change(pageSizeChanged);
+
+            $(".container-orangetitletext").text("@Convert.ToString(Category(navigationdata, "categoryname", Model))")
+        });
     </script>
+
     <div class="productlistheader">
-        <!-- Product sort -->
-        <div class="productsort">
-            <label>@ResourceKey("General.pagesize") :</label>
-            @PageSizeDropDownList(navigationdata, "8,16,32,64,128", Model, "", true, false)
-            @SortOrderAjaxDropDownList(navigationdata, ResourceKey("ProductView.orderby").ToString(), Model, sortAtts)
-        </div>
+        @if (!lbSubCategoryExists)
+        {
+            <!-- Product sort -->
+            <div class="productsort">
+                <label>@ResourceKey("General.pagesize") :</label>
+                @PageSizeDropDownList(navigationdata, "8,16,32,64,128", Model, "", true, false)
+                @SortOrderAjaxDropDownList(navigationdata, ResourceKey("ProductView.orderby").ToString(), Model, sortAtts)
+            </div>
+        }
+
         <!-- Category details -->
         <div class="categorydetails">
             @{
-                var totalCount = Model.GetSetting("recordcount") == "" ? Category(navigationdata, "entrycount", Model).ToString() : Model.GetSetting("recordcount");
+                //var totalCount = Model.GetSetting("recordcount") == "" ? Category(navigationdata, "entrycount", Model).ToString() : Model.GetSetting("recordcount");
             }
             @if (Model.GetSettingInt("displaytype") == 0)
             {
@@ -65,51 +80,60 @@
                 <h1>@(ResourceKey("ProductView.searchresults"))</h1>
             }
 
-            <div>@totalCount <span>@(ResourceKey("ProductView.articles"))</span></div>
-            <!--<i>@(Category(navigationdata, "message", Model))</i>-->
+            @*<div>@totalCount <span>@(ResourceKey("ProductView.articles"))</span></div>*@
+            @(Category(navigationdata, "message", Model))
         </div>
     </div>
 
-
-
-    @RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\ClassicAjax\\Default\\ProductDisplayListBody.cshtml", Model)
-
+    @if (lbSubCategoryExists)
+    {
+        <div class="drilldownlist">
+            @CategoryDrillDown(navigationdata.CategoryId, "CategoryMenuDrillLink.cshtml", "/DesktopModules/NBright/NBrightBuy", Model.GetSetting("themefolder"), navigationdata.CategoryId, Utils.GetCurrentCulture(), tabid)
+        </div>
+    }
+    else
+    {
+        @RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\ClassicAjax\\Default\\ProductDisplayListBody.cshtml", Model)
+    }
 </div>
 
-
-@if (Model.GetSettingInt("recordcount") > Model.GetSettingInt("pagesize"))
+@if (!lbSubCategoryExists)
 {
-    var recordcount = Model.GetSettingInt("recordcount");
-    var pagesize = Model.GetSettingInt("pagesize");
-    var page = Model.GetSettingInt("page");
-    if (page <= 0)
+    if (Model.GetSettingInt("recordcount") > Model.GetSettingInt("pagesize"))
     {
-        page = 1;
-    }
-    if (pagesize <= 0)
-    {
-        pagesize = 32;
-    }
-    var pgdata = NBrightBuyUtils.GetPagingData(recordcount, pagesize, page);
+        var recordcount = Model.GetSettingInt("recordcount");
+        var pagesize = Model.GetSettingInt("pagesize");
+        var page = Model.GetSettingInt("page");
+        if (page <= 0)
+        {
+            page = 1;
+        }
+        if (pagesize <= 0)
+        {
+            pagesize = 32;
+        }
+        var pgdata = NBrightBuyUtils.GetPagingData(recordcount, pagesize, page);
 
-    <div class="NBrightPagingDiv">
-        <ul>
-            @foreach (NBrightInfo info in pgdata)
-            {
-                var cssClass = "NBrightNormalPg";
-                var pagerClass = "ajaxpager";
-                var pagerId = "ajaxpager" + Model.ModuleId;
-                if (info.GetXmlPropertyBool("genxml/currentpage"))
+        <div class="NBrightPagingDiv">
+            <ul>
+                @foreach (NBrightInfo info in pgdata)
                 {
-                    cssClass = "NBrightSelectPg";
+                    var cssClass = "NBrightNormalPg";
+                    var pagerClass = "ajaxpager";
+                    var pagerId = "ajaxpager" + Model.ModuleId;
+                    if (info.GetXmlPropertyBool("genxml/currentpage"))
+                    {
+                        cssClass = "NBrightSelectPg";
 
+                    }
+                    <li class="@cssClass">
+                        <a id="@pagerId" class="" href="?page=@info.GetXmlProperty("genxml/pagenumber")" pagenumber="@info.GetXmlProperty("genxml/pagenumber")">@info.GetXmlProperty("genxml/text")</a>
+                    </li>
                 }
-                <li class="@cssClass">
-                    <a id="@pagerId" class="" href="?page=@info.GetXmlProperty("genxml/pagenumber")" pagenumber="@info.GetXmlProperty("genxml/pagenumber")">@info.GetXmlProperty("genxml/text")</a>
-                </li>
-            }
-        </ul>
-    </div>
+            </ul>
+        </div>
+    }
 }
+
 
 

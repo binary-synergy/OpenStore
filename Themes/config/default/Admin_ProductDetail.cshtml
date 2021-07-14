@@ -86,7 +86,10 @@
                                     <label class="control-label">@ResourceKey("General.Hidden")</label>
                                     &nbsp;@CheckBox(info, "genxml/checkbox/chkdisable", "")
                                     <label class="control-label">@ResourceKey("General.Disable")</label>
-                                    &nbsp;
+                                    &nbsp;@CheckBox(info, "genxml/lang/genxml/checkbox/chkcheckbox99", "")
+                                    <label class="control-label">Show Disclaimer</label>
+                                    &nbsp;@CheckBox(info, "genxml/lang/genxml/checkbox/chkcheckbox98", "")
+                                    <label class="control-label">Hide Product Reference</label>
                                     @if (StoreSettings.Current.GetBool("allowupload"))
                                     {
                                         <span class="">
@@ -324,6 +327,81 @@
                                 <div class="col-md-12">
                                     <label class="control-label sr-only">@ResourceKey("General.Description")</label>@LangFlag(info.Lang)
                                     @CkEditor(info, "genxml/lang/genxml/edt/description", "class='form-control' height='400' width='100%'")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <h3>@ResourceKey("General.additionalsummary")</h3>
+                <div class="box-content productdescription">
+                    <div class="form-horizontal dnnForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label sr-only">@ResourceKey("General.additionalsummary")</label>@LangFlag(info.Lang)
+                                    @CkEditor(info, "genxml/lang/genxml/edt/txtedit4", "class='form-control' height='400' width='100%'")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <h3>@ResourceKey("General.specification")</h3>
+                <div class="box-content productdescription">
+                    <div class="form-horizontal dnnForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label sr-only">@ResourceKey("General.specification")</label>@LangFlag(info.Lang)
+                                    @CkEditor(info, "genxml/lang/genxml/edt/txtedit", "class='form-control' height='400' width='100%'")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <h3>@ResourceKey("General.firmware")</h3>
+                <div class="box-content productdescription">
+                    <div class="form-horizontal dnnForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label sr-only">@ResourceKey("General.firmware")</label>@LangFlag(info.Lang)
+                                    @CkEditor(info, "genxml/lang/genxml/edt/txtedit2", "class='form-control' height='400' width='100%'")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <h3>@ResourceKey("General.userguides")</h3>
+                <div class="box-content productdescription">
+                    <div class="form-horizontal dnnForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label sr-only">@ResourceKey("General.userguides")</label>@LangFlag(info.Lang)
+                                    @CkEditor(info, "genxml/lang/genxml/edt/txtedit3", "class='form-control' height='400' width='100%'")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <h3>@ResourceKey("General.videos")</h3>
+                <div class="box-content productdescription">
+                    <div class="form-horizontal dnnForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label sr-only">@ResourceKey("General.videos")</label>@LangFlag(info.Lang)
+                                    @CkEditor(info, "genxml/lang/genxml/edt/txtedit5", "class='form-control' height='400' width='100%'")
                                 </div>
                             </div>
                         </div>

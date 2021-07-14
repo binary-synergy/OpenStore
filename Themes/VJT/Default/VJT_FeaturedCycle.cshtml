@@ -1,0 +1,72 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using System.Web
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@AddPreProcessMetaData("itemlistname", Model.GetSetting("itemlistname"), Model.FullTemplateName, Model.ModuleId.ToString())
+
+@AddPreProcessMetaData("orderby", "{bycategoryproduct}", Model.FullTemplateName, Model.ModuleId.ToString()) <!-- set default to manual sort on category product -->
+
+
+<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+
+    <!-- Product List Header -->
+    <ol class="carousel-indicators my-4">
+        @foreach (NBrightInfo info in Model.List)
+        {
+            int index = Model.List.IndexOf(info);
+            <li data-target="#carouselExampleCaptions" data-slide-to="@index.ToString()" class=@(info == Model.List.First() ? "active" : "")></li>
+        }
+    </ol>
+
+    <!-- Product List Body -->
+    <div class="carousel-inner">
+        @{
+            var lang = "";
+        }
+        @foreach (NBrightInfo info in Model.List)
+        {
+            var product = new ProductData(info.ItemID, info.Lang);
+            lang = info.Lang;
+
+            <div class="carousel-item @(info == Model.List.First() ? "active" : "")">
+
+                @if (product.Imgs.Count > 0)
+                {
+                    <div style="display:table-cell; vertical-align:middle; text-align:center">
+                        <img class=".img-fluid." style="max-width:100%" title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImageUrl(info, 0, 0)">
+                    </div>
+                }
+                else
+                {
+                    <div style="display: table-cell; vertical-align: middle; text-align: center">
+                        @(Model.GetSettingHtmlOf("noimageicon"))
+                    </div>
+                }
+
+                <div class="carousel-caption d-none d-md-block bg-dark mb-4">
+                    <h3><a href="@EntryUrl(info, Model)">@ProductName(info)</a></h3>
+                </div>
+
+                <!-- fields required to send required ajax data to server -->
+                <span class="entryid@(info.ItemID)">
+                    <input id="@(info.ItemID)_productid" type="hidden" value="@(info.ItemID)">
+                </span>
+
+            </div>
+        }
+    </div>
+
+    <!-- Product List footer -->
+    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>

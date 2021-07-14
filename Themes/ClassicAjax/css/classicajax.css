@@ -46,6 +46,18 @@
 .categorybreadcrumbs ul li a {color:#838383;font-size:14px;text-decoration:none;}
 .categorybreadcrumbs ul li a:hover {color:#00a3de;}
 
+.categorybreadcrumbscenter {text-align: center;margin-bottom: 10px;}
+.categorybreadcrumbscenter ul {list-style: none;display: inline-table;margin: 0;}
+.categorybreadcrumbscenter ul li {display: inline;color: #838383;}
+.categorybreadcrumbscenter ul li:after {content: " / ";}
+.categorybreadcrumbscenter ul li:last-child:after {display: none;}
+.categorybreadcrumbscenter ul li a {color: #838383;font-size: 14px;text-decoration: none;}
+.categorybreadcrumbscenter ul li a:hover {color: #00a3de;}
+
+/* category drilldowns */
+.categorydrilldown {vertical-align: middle;border-style: none;display: block;margin-left: auto;margin-right: auto;width: 100%;}
+.categorydrilldown a img {vertical-align: middle;border-style: none;display: block;margin-left: auto;margin-right: auto;width: 95%;}
+
 /* Product List Header */
 .productlistheader {margin-bottom:20px;}
 .productlistheader:after {content:"";display:table;clear:both;}
@@ -56,7 +68,9 @@
 /* Product List */
 .productlist {}
 .productlist:after {content:"";display:table;clear:both;}
-.productlist .product {width:24%;margin:0 0.5% 10px;height:335px;background:white;float:left;position:relative;border:#eae8e8 solid 1px;text-align:center;padding:30px 0 0 0;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;overflow:hidden;}
+.productlist .product {width:24%;margin:0 0 10px 10px;height:285px;background:white;float:left;position:relative;border:#d2d0d0 solid 1px;text-align:center;padding:0 0 0 0;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;overflow:hidden;}
+.productlist .productvert {margin: 0 0 10px 0;background: white;float: none !important;position: relative;border: #d2d0d0  solid 1px;text-align: center;padding: 10px 0 10px 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;overflow: hidden;}
+.productlist .producthoz {width: 320px;margin: 0 0 10px 10px;height: 250px;background: white;float: left;position: relative;border: #d2d0d0 solid 1px;text-align: center;padding: 0 0 0 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;overflow: hidden;}
 .productlist .product div {text-align:center;}
 .productlist .productimg {display:inline-block;width:160px;height:160px;}
 .productlist .product div.image {display:table-cell;text-align:center;vertical-align:middle;width:inherit;height:160px;}
@@ -134,6 +148,9 @@
 .carouselproduct .price .old {text-decoration:line-through;}
 .carouselproduct .price .sale {background:#757370;color:white;padding:0 3px;margin-left:3px;}
 .carouselproduct .price .ttc {margin-left:3px;font-size:12px;}
+
+/* Featured Carousel */
+.carousel-caption {position: relative;left: 0;top: 0;}
 
 /* Product Detail */
 .productdetail {overflow:hidden;line-height:normal;}
@@ -252,6 +269,7 @@ a.actionbutton i.fa {font-weight:normal;font-size:16px;margin-right:5px;}
 /* Product List */
 .productlist .product {width:32.33%;margin:0 0.5% 10px;}
 }
+
 /* for 640px and less */
 @media all and (max-width:640px),
             screen and (-webkit-min-device-pixel-ratio: 3.0) and (max-width: 1920px),

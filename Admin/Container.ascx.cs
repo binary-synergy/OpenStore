@@ -56,13 +56,15 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                     if (String.IsNullOrEmpty(ctrl))
                     {
-                        var plist = PluginUtils.GetPluginList();
-                        if (plist.Count() > 0)
-                        {
-                            // get first plugin in list as default.
-                            ctrl = plist.First().GUIDKey;
-                        }
-                        if (ctrl == "") ctrl = "dashsummary";
+                        //var plist = PluginUtils.GetPluginList();
+                        //if (plist.Count() > 0)
+                        //{
+                        //    // get first plugin in list as default.
+                        //    ctrl = plist.First().GUIDKey;
+                        //}
+                        
+                        //if (ctrl == "")
+                        ctrl = "dashsummary";
                         if (StoreSettings.Current.Settings().Count == 0) ctrl = "settings";
                         HttpContext.Current.Session["nbrightbackofficectrl"] = ctrl;
                     }

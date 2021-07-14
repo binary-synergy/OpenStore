@@ -1380,6 +1380,20 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        //Added on 26-04-2021 to check if category has sub category
+        public IEncodedString SubCategory(int parentCatId)
+        {
+            var strOut = "";
+            // if we have no catid in url, we're going to need a default category from module.
+            var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
+            var objCInfo = grpCatCtrl.GetVisibleCategories(parentCatId);
+            if (objCInfo != null && objCInfo.Count > 0)
+            {
+                strOut = "exists";
+            }
+
+            return new RawString(strOut);
+        }
 
         #endregion
 

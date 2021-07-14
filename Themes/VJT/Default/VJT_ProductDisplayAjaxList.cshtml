@@ -1,0 +1,135 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using System.Web
+@using DotNetNuke.Entities.Users
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+@using DotNetNuke.Entities.Portals;
+@using NBrightCore.common;
+@using Newtonsoft.Json;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@AddPreProcessMetaData("itemlistname", Model.GetSetting("itemlistname"), Model.FullTemplateName, Model.ModuleId.ToString())
+
+@AddPreProcessMetaData("orderby", "{bycategoryproduct}", Model.FullTemplateName, Model.ModuleId.ToString()) <!-- set default to manual sort on category product -->
+@AddPreProcessMetaData("orderby0", "{bycategoryproduct}", Model.FullTemplateName, Model.ModuleId.ToString())
+@AddPreProcessMetaData("orderby1", "NB3.FromPrice", Model.FullTemplateName, Model.ModuleId.ToString())
+@AddPreProcessMetaData("orderby2", "NB3.FromPrice DESC", Model.FullTemplateName, Model.ModuleId.ToString())
+@AddPreProcessMetaData("orderby3", "NB3.ProductRef", Model.FullTemplateName, Model.ModuleId.ToString())
+@AddPreProcessMetaData("orderby4", "NB3.ProductName", Model.FullTemplateName, Model.ModuleId.ToString())
+@{
+    var navigationdata = new NavigationData(PortalSettings.Current.PortalId, Model.GetSetting("modref"));
+    bool lbSubCategoryExists = !string.IsNullOrEmpty(Convert.ToString(SubCategory(navigationdata.CategoryId)));
+    var tabid = Model.GetSettingInt("productlisttab");
+    if (tabid <= 0)
+    {
+        tabid = StoreSettings.Current.ProductListTabId;
+    }
+}
+<div style="margin-left: 20px; margin-right: 20px">
+    <div class="eds_box eds_box_2">
+        <h2 style="text-align: center;">@Category(navigationdata, "categoryname", Model)</h2>
+
+        <!-- 0=Normal 1=Search 2=Favorites  -->
+        @if (Model.GetSettingInt("displaytype") == 0)
+        {
+            <div class="categorybreadcrumbscenter">@CategoryBreadCrumb(navigationdata, true, Model, true, -1, "", -1, 400, true)</div>
+        }
+        @{
+            var sortClass = "sortorderselect";
+            var sortId = "sortorderselect" + Model.ModuleId;
+            var pageClass = "pagesizedropdown";
+            var sortAtts = "id='" + sortId + "' class='" + sortClass + "'";
+        }
+        <script>
+            $(document).ready(function () {
+                $(".@sortClass").unbind("change");
+                $(".@sortClass").change(sortOrderChanged);
+
+                $(".@pageClass").unbind("change");
+                $(".@pageClass").change(pageSizeChanged);
+
+                $(".container-orangetitletext").text("@Convert.ToString(Category(navigationdata, "categoryname", Model))")
+            });
+        </script>
+    </div>
+
+    <div class="eds_box eds_box_2">
+        @if (!lbSubCategoryExists)
+        {
+            <!-- Product sort -->
+            <div class="productsort">
+                <label>@ResourceKey("General.pagesize") :</label>
+                @PageSizeDropDownList(navigationdata, "8,16,32,64,128", Model, "", true, false)
+                @SortOrderAjaxDropDownList(navigationdata, ResourceKey("ProductView.orderby").ToString(), Model, sortAtts)
+            </div>
+        }
+
+        <!-- Category details -->
+        <div class="categorydetails">
+            @{
+                //var totalCount = Model.GetSetting("recordcount") == "" ? Category(navigationdata, "entrycount", Model).ToString() : Model.GetSetting("recordcount");
+            }
+            @if (Model.GetSettingInt("displaytype") == 0)
+            {
+                <h1>@Category(navigationdata, "categoryname", Model)</h1>
+            }
+            @if (Model.GetSettingInt("displaytype") == 1)
+            {
+                <h1>@(ResourceKey("ProductView.searchresults"))</h1>
+            }
+
+            @*<div>@totalCount <span>@(ResourceKey("ProductView.articles"))</span></div>*@
+            @(Category(navigationdata, "message", Model))
+        </div>
+
+        @if (lbSubCategoryExists)
+        {
+            <div class="eds_box eds_box_2 productlist">
+                @CategoryDrillDown(navigationdata.CategoryId, "VJT_CategoryMenuDrillLink.cshtml", "/DesktopModules/NBright/NBrightBuy", Model.GetSetting("themefolder"), navigationdata.CategoryId, Utils.GetCurrentCulture(), tabid)
+            </div>
+        }
+        else
+        {
+            @RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\VJT\\Default\\VJT_ProductDisplayListBody.cshtml", Model)
+        }
+    </div>
+
+    @if (!lbSubCategoryExists)
+    {
+        if (Model.GetSettingInt("recordcount") > Model.GetSettingInt("pagesize"))
+        {
+            var recordcount = Model.GetSettingInt("recordcount");
+            var pagesize = Model.GetSettingInt("pagesize");
+            var page = Model.GetSettingInt("page");
+            if (page <= 0)
+            {
+                page = 1;
+            }
+            if (pagesize <= 0)
+            {
+                pagesize = 32;
+            }
+            var pgdata = NBrightBuyUtils.GetPagingData(recordcount, pagesize, page);
+
+            <div class="NBrightPagingDiv">
+                <ul>
+                    @foreach (NBrightInfo info in pgdata)
+                    {
+                        var cssClass = "NBrightNormalPg";
+                        var pagerClass = "ajaxpager";
+                        var pagerId = "ajaxpager" + Model.ModuleId;
+                        if (info.GetXmlPropertyBool("genxml/currentpage"))
+                        {
+                            cssClass = "NBrightSelectPg";
+
+                        }
+                        <li class="@cssClass">
+                            <a id="@pagerId" class="" href="?page=@info.GetXmlProperty("genxml/pagenumber")" pagenumber="@info.GetXmlProperty("genxml/pagenumber")">@info.GetXmlProperty("genxml/text")</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    }

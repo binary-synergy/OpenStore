@@ -1,0 +1,62 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using System.Web
+@using DotNetNuke.Entities.Users
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+@using DotNetNuke.Entities.Portals;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+<script>
+    $(document).ready(function () {
+        // set the required ajax parmas for this module
+        $('#moduleid').val('@Model.ModuleId');
+        $('#pagesize').val('@Model.GetSetting("pagesize", "0")');
+        $('#themefolder').val('@Model.GetSetting("themefolder")');
+        $('#entitytypecode').val('@Model.GetSetting("entitytypecode")');
+        $("#modkey").val("@Model.ModuleRef");
+        //loadProductList("@Model.ModuleId");
+    });
+</script>
+@{
+    var navigationdata = new NavigationData(PortalSettings.Current.PortalId, Model.GetSetting("modref"));
+}
+
+<div id="ajaxproducts@(Model.ModuleId)">
+
+    <p><span style="font-size: 13.5pt; font-family: DaxOT, sans-serif;">The Pro Static Simple and Direct Shear System is capable of Simple Shear, Direct and Residual Shear and Oedometer testing</span></p>
+    @foreach (NBrightInfo info in Model.List)
+    {
+        var product = new ProductData(info.ItemID, info.Lang);
+        var itemId = info.ItemID;
+        var entryUrl = EntryUrl(navigationdata, info, Model);
+        var lang = info.Lang;
+
+        <table id="dlProductList" class="ProductList" cellspacing="0" cellpadding="0" border="0" style="width:100%;border-collapse:collapse;">
+            <tbody>
+                <tr>
+                    <td class="ListCell" align="center" valign="top" style="height:100%;">
+                        <div class="FeaturedProduct ListItem">
+                            <table cellpadding="0" cellspacing="0" style="width: 100%; height: 100%;">
+                                <tbody>
+                                    <tr>
+                                        <td class="ImageWrapper" valign="middle"><a href="@entryUrl" title="@ProductName(info)"><img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImageUrl(info, 160, 0)"></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="InfoPanel">
+                                            <div class="Name">
+                                                <h3>@ProductName(info)</h3>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+
+</div>

@@ -1,0 +1,62 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using System.Web
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+@using DotNetNuke.Entities.Portals;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+<!-- Product List Body -->
+<div id="listwrapper" class="eds_box eds_box_2 productlist">
+    @{
+        var lang = "";
+        var navigationdata = new NavigationData(PortalSettings.Current.PortalId, Model.GetSetting("modref"));
+        var addtobasket = ResourceKey("ProductView.addtobasket");
+        var from = ResourceKey("ProductView.from");
+        var productdetail = ResourceKey("ProductView.productdetail");
+        var promoflag = ResourceKey("ProductView.promoflag");
+        var outofstockflag = ResourceKey("ProductView.outofstockflag");
+        var cataloguemode = Model.GetSettingBool("cataloguemode");
+    }
+
+    <div class="addedtobasket" style="display:none;">@ResourceKey("ProductView.addedtobasket")</div>
+
+    @foreach (NBrightInfo info in Model.List)
+    {
+        var product = new ProductData(info.ItemID, info.Lang);
+        var itemId = info.ItemID;
+        var entryUrl = EntryUrl(navigationdata, info, Model);
+        lang = info.Lang;
+
+        <div class="eds_box eds_box_2 product">
+            <div class="productimg">
+                @if (product.Imgs.Count > 0)
+                {
+                    <div class="image">
+                        <img class="img-fluid" style="max-width: 100%" title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImageUrl(info, 200, 200)">
+                    </div>
+                }
+                else
+                {
+                    <div class="noimage">
+                        <i class="fa fa-picture-o"></i>
+                    </div>
+                }
+            </div>
+
+            <div class="description">
+                <h2><a href="@entryUrl"><span>@info.GetXmlProperty("genxml/textbox/manufacturer")</span>@ProductName(info)</a></h2>
+            </div>
+
+            <!-- fields required to send required ajax data to server -->
+            <span class="entryid@(itemId)">
+                <input id="@(itemId)_productid" type="hidden" value="@itemId">
+                <input id="@(itemId)_shopitemid" type="hidden" value="@itemId">
+                <input id="@(itemId)_uilang" type="hidden" value="@lang">
+            </span>
+
+        </div>
+    }
+
+</div>

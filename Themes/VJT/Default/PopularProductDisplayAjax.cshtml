@@ -1,0 +1,51 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using System.Web
+@using DotNetNuke.Entities.Users
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+@using DotNetNuke.Entities.Portals;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+<script>
+    $(document).ready(function () {
+        // set the required ajax parmas for this module
+        $('#moduleid').val('@Model.ModuleId');
+        $('#pagesize').val('@Model.GetSetting("pagesize", "0")');
+        $('#themefolder').val('@Model.GetSetting("themefolder")');
+        $('#entitytypecode').val('@Model.GetSetting("entitytypecode")');
+        $("#modkey").val("@Model.ModuleRef");
+        //loadProductList("@Model.ModuleId");
+    });
+</script>
+@{
+    var navigationdata = new NavigationData(PortalSettings.Current.PortalId, Model.GetSetting("modref"));
+}
+
+<div id="ajaxproducts@(Model.ModuleId)">
+
+    <p>Among the most popular products last month (pictured from left to right) were the Dual Automatic Pressure Controller, Pro Automatic Triaxial System, the Dynamic Simple Shear with Confining Pressure System, the ShearSCAN Pro System and the ACONS Pro Automatic Consolidation System.<br />&nbsp;</p>
+    <span class="ProductList" style="display:inline-block;width:100%;">
+        @foreach (NBrightInfo info in Model.List)
+        {
+            var product = new ProductData(info.ItemID, info.Lang);
+            var itemId = info.ItemID;
+            var entryUrl = EntryUrl(navigationdata, info, Model);
+            var lang = info.Lang;
+            <span class="span" align="center" valign="top" style="display:inline-block;height:100%;">
+                <div align="center" valign="top">
+                    <div class="ListItem">
+                        <div class="ImageWrapper" valign="middle">
+                            <a href="@entryUrl" ><img src="@ProductImageUrl(info, 140, 140)" border="0"></a>
+                        </div>
+                        <div class="InfoPanel Name">
+                            <h3>@ProductName(info)</h3>
+                        </div>
+                    </div>
+                </div>
+            </span>
+        }
+    </span>
+
+</div>

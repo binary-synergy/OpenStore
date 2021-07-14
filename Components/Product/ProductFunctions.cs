@@ -37,7 +37,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
         public string RazorTemplate = "";
         public string ThemeFolder = "config";
         private bool DebugMode => StoreSettings.Current.DebugMode;
-        private bool DoNotUseCache = false;
+        private bool DoNotUseCache = true;
 
         public void ResetTemplateRelPath()
         {
